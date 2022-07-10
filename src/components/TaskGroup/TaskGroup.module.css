@@ -1,0 +1,35 @@
+.TaskGroup label {
+    background-color: #E9EDF0;
+
+    text-align: center;
+
+    padding: 0.5rem;
+
+}
+
+.TaskGroup .CardsContainer {
+    background-color: #E9EDF0;
+
+    text-align: center;
+
+    padding: 0.5rem;
+}
+
+.TaskGroup .CardsContainer button {
+    background-color: #c8ced2;
+
+    border: 1px solid #C6C2C2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.5rem;
+
+    width: 95%;
+    margin: auto;
+}
+
+.TaskGroup .CardsContainer button img{
+    width: 16px;
+}

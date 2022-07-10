@@ -1,0 +1,15 @@
+.Sidebar {
+    display: flex;
+    justify-content: center;
+
+    padding-top: 1rem;
+}
+
+.Sidebar .UserPic{
+    height: 100px;
+    width: 100px;
+
+    border-radius: 300px;
+
+    background-color: #C8CED2;
+}

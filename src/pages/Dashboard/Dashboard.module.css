@@ -1,0 +1,26 @@
+.Dashboard header {
+    background-color: #fff;
+
+    padding: 1rem;
+
+    margin-bottom: 0.25rem;
+}
+
+.Dashboard header h2, .Dashboard header h1 {
+    margin: 0;
+}
+
+.Dashboard main {
+    background-color: #fff;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    grid-gap: 1rem;
+
+    padding: 1rem;
+
+    min-height: 100vh;
+}
+
+

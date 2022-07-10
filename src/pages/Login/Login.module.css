@@ -1,0 +1,75 @@
+.Login {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.Login .Brand {
+    background-color: #2266E3;
+
+    height: 80px;
+
+    display: none;
+}
+
+.Login .FormContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.Login form {
+    width: 70%;
+}
+
+.Login .FormContainer form h1 {
+    margin-top: 8rem;
+}
+
+.Login .FormContainer form h2 {
+    margin-top: 4rem;
+}
+
+.Login .FormContainer form p {
+    margin-bottom: 3rem;
+}
+
+.Login .FormContainer form input {
+    margin-bottom: 0.5rem;
+
+    width: 100%;
+
+    display: block;
+}
+
+.Login .FormContainer form button {
+    margin-bottom: 3rem;
+
+    width: 100%;
+}
+
+.Login .FormContainer form a {
+    color: #2266E3;
+}
+
+.Login .Hero {
+    background-color: #2266E3;
+
+    min-height: 100vh;
+}
+
+@media screen and (max-width: 800px) {
+    .Login {
+        grid-template-columns: 1fr;
+    }
+    .Login .Brand {
+        display: block;
+    }   
+    .Login .Hero {
+        display: none;
+    }
+    .Login .FormContainer form h1 {
+        margin-top: 3rem;
+    }
+    .Login .FormContainer form {
+        width: 90%;
+    }
+}

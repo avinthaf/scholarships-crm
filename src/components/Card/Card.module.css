@@ -1,0 +1,46 @@
+.Card{
+    padding: 0.5rem;
+    margin: 0.5rem auto;
+
+    width: 95%;
+
+    background-color: #fff;
+
+    box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.264);
+
+    position: relative;
+
+}
+
+.Card:hover {
+    cursor: pointer;
+    background-color: #C8CED2;
+}
+
+.Card .Top, .Card .Bottom {
+    position: absolute;
+    width: 100%;
+
+    left:0;
+
+    height: 50%;
+
+    z-index: 900
+
+}
+
+.Card .Top {
+    top: 0px;
+}
+
+.Card .Bottom {
+    bottom: 0;
+}
+
+.DragActiveTop {
+    border-top: 4px solid #2266e3;
+}
+
+.DragActiveBottom {
+    border-bottom: 4px solid #2266e3;
+}

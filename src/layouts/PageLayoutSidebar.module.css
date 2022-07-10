@@ -1,0 +1,14 @@
+.PageLayout {
+
+    min-height: 100vh;
+
+    display: grid;
+    grid-template-columns: 2fr 7fr;
+
+}
+
+.PageLayout .PageContent {
+}
+
+@media only screen and (max-width: 850px) {
+}

@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +14,118 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Typography */
+
+h1 {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 17px;
+
+}
+
+li {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+span {
+  font-weight: 700;
+  font-size: 14px;
+
+  color: #666
+}
+
+label {
+  font-weight: 400;
+  font-size: 14px;
+  
+  color: #666;
+}
+
+input {
+  font-weight: 500;
+  font-size: 14px;
+
+  color: #666;
+}
+
+p {
+  font-weight: 400;
+  font-size: 12px;
+
+  margin: 0;
+
+  color: #666
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Forms */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  padding: 0.5rem;
+
+  border-color: 1px solid #BBB !important;
+}
+
+/* Buttons */ 
+
+button {
+  display: block;
+}
+
+.BlueButton {
+  background-color: #2266E3;
+  color: #fff;
+
+  border: 1px solid #2266E3;
+  border-radius: 3px;
+  
+  padding: 0.5rem;
+
+}
+
+ /* Error */
+ .Error {
+  display: flex;
+  height: 16px;
+  margin-bottom: 10px;
+}
+
+.Error img {
+  margin-right: 5px;
+}
+
+.Error span {
+  font-size: 12px;
+  color: #A72C2C
+}
+
+.ErrorInput {
+  outline: none !important;
+  border: 2px solid #A72C2C !important;
+  border-radius: 3px;
+}
+
+/* Navigatiom */
+
+.hamburger-react {
+  height: 16px !important;
 }
