@@ -9,13 +9,49 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from "./redux/auth.js";
-import { setToDoTasks, setDoingTasks, setDoneTasks } from "./redux/card.js";
+import { setTasks } from "./redux/card.js";
 
 // Pages
 import Login from './pages/Login/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 
 export const auth = getAuth(app);
+
+// Modelling Database
+const tasks = [
+  {
+    status: "To Do",
+    title: "Task 1",
+    createdDate: "Mon Jul 11, 5:45 PM"
+  },
+  {
+    status: "To Do",
+    title: "Task 7",
+    createdDate: "Sat Jul 09, 1:25 PM"
+  },
+  {
+    status: "Doing",
+    title: "Task 2",
+    createdDate: "Sat Jul 09, 1:25 PM"
+  },
+  {
+    status: "Done",
+    title: "Task 3",
+    createdDate: "Mon Jul 11 11:45 AM"
+  },
+  
+];
+
+let sortedTasksObj = {};
+
+tasks.map((task) => {
+  if (sortedTasksObj[task.status]) {
+    sortedTasksObj[task.status].push(task);
+  } else {
+    sortedTasksObj[task.status] = [];
+    sortedTasksObj[task.status].push(task);
+  }
+});
 
 function App() {
 
@@ -26,14 +62,10 @@ function App() {
     onAuthStateChanged(auth, (user => {
       if (user) {
         dispatch(setUser(user.uid))
-        dispatch(setToDoTasks(["Task 1", "Task 2", "Task 3"]))
-        dispatch(setDoingTasks(["Task 4", "Task 5", "Task 6"]))
-        dispatch(setDoneTasks(["Task 7", "Task 8", "Task 9"]))
+        dispatch(setTasks(sortedTasksObj))
       } else {
         dispatch(setUser(null))
-        dispatch(setToDoTasks([]))
-        dispatch(setDoingTasks([]))
-        dispatch(setDoneTasks([]))
+        dispatch(setTasks(null))
       }
     }))
   }, [auth]);

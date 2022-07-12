@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    toDoTasks: [],
-    doingTasks: [],
-    doneTasks: [],
+    tasks: {},
     dragIndex: null,
     dropIndex: null,
     dropIndexPosition: "top",
@@ -24,14 +22,19 @@ export const cardSlice = createSlice({
     name: 'card',
     initialState,
     reducers: {
-        setToDoTasks: (state, action) => {
-            state.toDoTasks = action.payload
+        setTasks: (state, {payload}) => {
+            if (payload === null) {
+                state.tasks = {
+                    toDo: [],
+                    doing: [],
+                    done: []
+                }
+            } else {
+                state.tasks = payload
+            }
         },
-        setDoingTasks: (state, action) => {
-            state.doingTasks = action.payload
-        },
-        setDoneTasks: (state, action) => {
-            state.doneTasks = action.payload
+        setTaskList: (state, {payload}) => {
+            state.tasks[payload.status] = payload.value
         },
         setDragIndex: (state, action) => {
             // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -67,10 +70,9 @@ export const cardSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { 
-    setToDoTasks, 
-    setDoingTasks, 
-    setDoneTasks, 
+export const {
+    setTasks,
+    setTaskList,  
     setDragIndex, 
     setDropIndex,
     setDropIndexPosition, 

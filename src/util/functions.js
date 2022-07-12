@@ -1,9 +1,7 @@
 import { auth } from '../App.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { 
-    setToDoTasks, 
-    setDoingTasks, 
-    setDoneTasks, 
+import {
+    setTaskList, 
     setDragIndex, 
     setDropIndex, 
     setDropIndexPosition, 
@@ -32,6 +30,18 @@ export function handleSignIn(formValues, setFormErrors) {
 };
 
 // Forms
+
+export function handleInputChange(event, setFormValues) {
+    event.preventDefault();
+    const { name, value } = event.target;
+
+    setFormValues((prevValues) => {
+        return {
+            ...prevValues,
+            [name]: value
+        }
+    })
+};
 
 export function handleAuthFormInputChange(event, setFormValues, setFormErrors) {
     event.preventDefault();
@@ -80,7 +90,20 @@ export function handleAuthFormInputChange(event, setFormValues, setFormErrors) {
     })
 };
 
-// Cards
+// Cards 
+
+export function createCard(tasks, label, dispatch) {
+    let updatedArr = tasks[label].slice();
+    // Insert new card with title 'Untitled'
+    updatedArr.unshift({status: label, title: "Untitled", createdDate: getFormattedDateTime() });
+    dispatch(setTaskList({
+      status: label,
+      value: updatedArr,
+      createdDate: getFormattedDateTime()
+    }))
+};
+
+// Kanban Functionality
 
 export function handleDragStart(index, children, label, dispatch) {
     dispatch(setDragIndex(index));
@@ -117,75 +140,62 @@ export function handleDragLeaveBottom(event, styles) {
     event.target.classList.remove(styles.DragActiveBottom)
 };
 
-export function handleDrop(event, styles, toDoTasks, doingTasks, doneTasks, dragIndex, dropIndex, selectedTaskGroup, dragCard, dragCardLabel, dropIndexPosition, dispatch) {
+export function handleDrop(event, styles, tasks, dragIndex, dropIndex, selectedTaskGroup, dragCardLabel, dropIndexPosition, dispatch) {
     event.target.classList.remove(styles.DragActiveTop)
     event.target.classList.remove(styles.DragActiveBottom)
 
+    const { title, createdDate } = tasks[dragCardLabel][dragIndex];
+    
     // remove card from originating task group list
-    if (dragCardLabel === "To Do") {
-      let updatedArr = toDoTasks.slice();
-      updatedArr.splice(dragIndex, 1);
-      dispatch(setToDoTasks(updatedArr));
-    }
-    if (dragCardLabel === "Doing") {
-      let updatedArr = doingTasks.slice();
-      updatedArr.splice(dragIndex, 1);
-      dispatch(setDoingTasks(updatedArr));
-    }
-    if (dragCardLabel === "Done") {
-      let updatedArr = doneTasks.slice();
-      updatedArr.splice(dragIndex, 1);
-      dispatch(setDoneTasks(updatedArr));
-    }
+    let updatedOriginArr = tasks[dragCardLabel].slice();
+    updatedOriginArr.splice(dragIndex, 1);
+    dispatch(setTaskList({
+      status: dragCardLabel,
+      value: updatedOriginArr
+    }));
 
     // Add card to selected task group list
-    if (selectedTaskGroup === "To Do") {
-      let updatedArr = toDoTasks.slice();
-      if (dragCardLabel !== selectedTaskGroup) {
-        updatedArr.splice((dropIndex + 1), 0 , dragCard);
-      } else {
-        updatedArr.splice(dragIndex, 1);
-        if (dropIndexPosition === "top") {
-          updatedArr.splice((dropIndex + 1), 0 , dragCard);
-        } else if (dropIndexPosition === "bottom") {
-          updatedArr.splice(dropIndex, 0 , dragCard);
-        }
+    let updatedRecipientArr = tasks[selectedTaskGroup].slice();
+    if (dragCardLabel !== selectedTaskGroup) {
+      updatedRecipientArr.splice((dropIndex + 1), 0 , { status: selectedTaskGroup, title: title, createdDate: createdDate });
+    } else {
+      updatedRecipientArr.splice(dragIndex, 1);
+      if (dropIndexPosition === "top") {
+        updatedRecipientArr.splice((dropIndex + 1), 0 , { status: selectedTaskGroup, title: title, createdDate: createdDate });
+      } else if (dropIndexPosition === "bottom") {
+        updatedRecipientArr.splice(dropIndex, 0 , { status: selectedTaskGroup, title: title, createdDate: createdDate });
       }
-      dispatch(setToDoTasks(updatedArr));
     }
-    if (selectedTaskGroup === "Doing") {
-      let updatedArr = doingTasks.slice();
-      if (dragCardLabel !== selectedTaskGroup) {
-        updatedArr.splice((dropIndex + 1), 0 , dragCard);
-      } else {
-        updatedArr.splice(dragIndex, 1);
-        if (dropIndexPosition === "top") {
-          updatedArr.splice((dropIndex + 1), 0 , dragCard);
-        } else if (dropIndexPosition === "bottom") {
-          updatedArr.splice(dropIndex, 0 , dragCard);
-        }
-      }
-      dispatch(setDoingTasks(updatedArr));
-    }
-    if (selectedTaskGroup === "Done") {
-      let updatedArr = doneTasks.slice();
-      if (dragCardLabel !== selectedTaskGroup) {
-        updatedArr.splice((dropIndex + 1), 0 , dragCard);
-      } else {
-        updatedArr.splice(dragIndex, 1);
-        if (dropIndexPosition === "top") {
-          updatedArr.splice((dropIndex + 1), 0 , dragCard);
-        } else if (dropIndexPosition === "bottom") {
-          updatedArr.splice(dropIndex, 0 , dragCard);
-        }
-      }
-      dispatch(setDoneTasks(updatedArr));
-    }
+    dispatch(setTaskList({
+      status: selectedTaskGroup,
+      value: updatedRecipientArr
+    }));
     
 }
 
-export function handleOpenModal(children, label, cardModal, dispatch) {
-    let updatedObj = {...cardModal.values, title: children, status: label};
+export function handleOpenModal(index, children, label, createdDate, cardModal, dispatch) {
+    let updatedObj = {...cardModal.values, index: index, title: children, status: label, createdDate: createdDate};
     dispatch(setCardModalValues(updatedObj));
     dispatch(setCardModalShow(true));
+};
+
+// Date and Time
+export function getFormattedDateTime() {
+
+    const today = new Date();
+
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const months = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    const date = today.getDate();
+    
+    const day = days[today.getUTCDay()];
+
+    const month = months[today.getMonth()];
+
+    const year = today.getFullYear();
+
+    const time = `${(today.getHours() + 24) % 12 || 12}:${today.getMinutes()}`
+
+    return `${day} ${month} ${date}, ${year} ${time} ${today.getHours() < 12 ? "AM" : "PM"}`
 };

@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
+import _ from 'lodash';
+
 // Layouts
 import PageLayout from '../../layouts/PageLayoutSidebar';
 
@@ -14,7 +16,7 @@ import TaskGroup from '../../components/TaskGroup/TaskGroup';
 const Dashboard = ({user}) => {
 
   // Redux
-  const { toDoTasks, doingTasks, doneTasks } = useSelector(state => state.card);
+  const { tasks } = useSelector(state => state.card);
 
   // State   
   const [loading, setLoading] = useState(false);
@@ -27,8 +29,8 @@ const Dashboard = ({user}) => {
     } else {
         window.location.replace("/login")
     }
-  }, [setLoading]);   
-
+  }, [setLoading]);
+  
   if (loading) return "Loading..."
 
   return (
@@ -39,33 +41,23 @@ const Dashboard = ({user}) => {
             <h1>Let's get things done!</h1>
           </header>
           <main>
-            <TaskGroup label="To Do">
-              {
-                toDoTasks.map((task, index) => <Card 
-                key={index} 
-                index={index}
-                label="To Do"
-                >{task}</Card>)
-              }
-            </TaskGroup>
-            <TaskGroup label="Doing">
-              {
-                doingTasks.map((task, index) => <Card 
-                key={index} 
-                index={index}
-                label="Doing"
-                >{task}</Card>)
-              }
-            </TaskGroup>
-            <TaskGroup label="Done">
             {
-                doneTasks.map((task, index) => <Card 
-                key={index} 
-                index={index}
-                label="Done"
-                >{task}</Card>)
-              }
-            </TaskGroup>
+              _.values(tasks).map((taskGroup, taskGroupIndex) => (
+                <TaskGroup key={taskGroupIndex} label={Object.keys(tasks)[taskGroupIndex]}>
+                  {
+                    taskGroup.map((task, taskIndex) => (
+                      <Card
+                      key={taskIndex} 
+                      index={taskIndex}
+                      label={Object.keys(tasks)[taskGroupIndex]}
+                      createdDate={task.createdDate}>
+                        {task.title}
+                      </Card>
+                    ))
+                  }
+                </TaskGroup>
+              ))
+            }
           </main>
         </div>
     </PageLayout>

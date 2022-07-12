@@ -11,6 +11,8 @@
 
     padding: 20px;
 
+    z-index: 2100;
+
     box-shadow: rgb(45 45 45 / 20%) 0px 0px 0.125rem, rgb(45 45 45 / 16%) 0px 0.25rem 0.5rem, rgb(45 45 45 / 12%) 0px -0.5rem 1rem;
 }
 
@@ -20,8 +22,23 @@
     top: 20px;
 }
 
-.Modal input {
+.Modal div[contenteditable="true"] {
     width: 100%;
+
+    padding: 0.5rem 0;
+
+    border: none;
+    outline: none;
+
+    font-weight: 700;
+    font-size: 20px;
+
+    color: #000;
+}
+
+.Modal .Property {
+    display: grid;
+    grid-template-columns: 0.5fr 3fr;
 
     padding: 0.5rem 0;
 }

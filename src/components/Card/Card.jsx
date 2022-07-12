@@ -1,33 +1,27 @@
 import styles from './Card.module.css';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { 
-  setToDoTasks, 
-  setDoingTasks, 
-  setDoneTasks, 
-  setDragIndex, 
-  setDropIndex, 
-  setDropIndexPosition, 
-  setDragCard, 
-  setDragCardLabel,
-  setCardModalShow,
-  setCardModalValues  
-} from '../../redux/card.js';
 
 // Util Functions
-import { handleDragStart, handleDragOver, handleDragEnterTop, handleDragEnterBottom, handleDragLeaveTop, handleDragLeaveBottom, handleDrop, handleOpenModal } from '../../util/functions.js';
+import { 
+  handleDragStart, 
+  handleDragOver, 
+  handleDragEnterTop, 
+  handleDragEnterBottom, 
+  handleDragLeaveTop, 
+  handleDragLeaveBottom, 
+  handleDrop, 
+  handleOpenModal
+} from '../../util/functions.js';
 
-const Card = ({children, index, label}) => {
+const Card = ({empty, children, index, label, createdDate}) => {
 
   // Redux
-  const { 
-    toDoTasks, 
-    doingTasks, 
-    doneTasks, 
+  const {
+    tasks, 
     dragIndex, 
     dropIndex, 
     dropIndexPosition, 
-    dragCard, 
     dragCardLabel, 
     selectedTaskGroup,
     cardModal 
@@ -36,12 +30,12 @@ const Card = ({children, index, label}) => {
 
   return (
     <div 
-    className={styles.Card} 
+    className={`${styles.Card} ${empty ? styles.EmptyCard : ""}`} 
     draggable
-    onClick={() => handleOpenModal(children, label, cardModal, dispatch)}
+    onClick={() => handleOpenModal(index, children, label, createdDate, cardModal, dispatch)}
     onDragStart={() => handleDragStart(index, children, label, dispatch)}
     onDragOver={(event) => handleDragOver(event)}
-    onDrop={(event) => handleDrop(event, styles, toDoTasks, doingTasks, doneTasks, dragIndex, dropIndex, selectedTaskGroup, dragCard, dragCardLabel, dropIndexPosition, dispatch)}
+    onDrop={(event) => handleDrop(event, styles, tasks, dragIndex, dropIndex, selectedTaskGroup, dragCardLabel, dropIndexPosition, dispatch)}
     >
       <div 
       className={styles.Top}
@@ -49,7 +43,8 @@ const Card = ({children, index, label}) => {
       onDragLeave={(event) => handleDragLeaveTop(event, styles)}></div>
       <span>{children}</span>
       <div 
-      className={styles.Bottom} 
+      className={styles.Bottom}
+      style={{ display: empty ? "none" : "block" }} 
       onDragEnter={(event) => handleDragEnterBottom(event, styles, index, dispatch)}
       onDragLeave={(event) => handleDragLeaveBottom(event, styles)}></div>
     </div>
